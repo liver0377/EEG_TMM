@@ -37,6 +37,8 @@ The current shared source is `/root/fsas/dataset_eeg/unpacked/datasets`. New exp
 
 ## Development status
 
-The repository currently contains only the collaboration and reproducibility scaffold. Historical scripts are intentionally not copied yet because they contain user-specific absolute paths and need to be audited before migration.
+The repository currently contains the collaboration scaffold and a reviewed inventory of the historical baseline. The legacy implementation remains in its independent upstream repository and will be migrated selectively only after compatibility reproduction; it contains user-specific paths and behaviors that must first be frozen and audited.
 
 Read `AGENTS.md` and `docs/协作与同步指南.md` before changing paths, importing historical code, or launching experiments.
+
+The current legacy-asset audit and the execution order for Wu Dawei's experiments are documented in `docs/吴大伟实验审计与执行计划.md`. The two-phase compatibility and migration procedure is in `docs/基线复现方案.md`, with observed code and checkpoint candidates recorded in `manifests/legacy_baseline.yaml`.
