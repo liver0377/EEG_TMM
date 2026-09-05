@@ -1,0 +1,6 @@
+# Portable path template. Environment-variable expansion is performed by the
+# application; this file contains no machine-specific secrets.
+paths:
+  data_root: ${CID_DATA_ROOT}
+  artifact_root: ${CID_ARTIFACT_ROOT}
+  cache_root: ${CID_CACHE_ROOT}
