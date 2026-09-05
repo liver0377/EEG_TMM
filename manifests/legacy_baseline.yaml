@@ -1,0 +1,83 @@
+schema_version: 1
+manifest_id: legacy_baseline_20260905
+status: audit_candidate
+recorded_at: "2026-09-05"
+
+legacy_repository:
+  url: https://github.com/liver0377/EEG_DIFFUSION.git
+  commit: 3f4527f845d4261650e74f32894ce348c9733009
+  commit_date: "2025-12-18T16:23:55+08:00"
+  role: read_only_historical_upstream
+  import_policy: selectively_migrate_after_compatibility_reproduction
+  key_files:
+    cog_lora_model: model/Efusion_s3diff.py
+    static_lora_candidate_model: model/EfusionNG.py
+    no_guidance_model: model/Efusion_no_guidance.py
+    training_entrypoint: train_Efusion.py
+    static_lora_training_entrypoint: train_EfusionNG.py
+    things_inference_entrypoint: inference_efusion_THINGS.py
+    dataset_loader: data/LoraDemoDataset.py
+    inference_config: config/inference_Efusion.yaml
+    scheduler_helper: utils_loc/util.py
+
+external_roots:
+  data_root_env: CID_DATA_ROOT
+  artifact_root_env: CID_ARTIFACT_ROOT
+  cache_root_env: CID_CACHE_ROOT
+
+checkpoint_candidates:
+  - id: cog_lora_etnet17_epoch40
+    relative_to: CID_DATA_ROOT
+    path: ckpt/lora/with_eeg_ETNet_17/7-24/checkpoints/model_epoch_40.pkl
+    size_bytes: 139692958
+    mtime_observed: "2025-07-24T16:12:02+08:00"
+    candidate_role: paper_ours
+    confidence: medium
+    evidence: inference_efusion_THINGS.py_default_pretrained_path
+    author_confirmation_required: true
+
+  - id: cog_lora_eegtransformer_epoch50
+    relative_to: CID_DATA_ROOT
+    path: ckpt/lora/with_eeg_EEGTransformer/7-17/checkpoints/model_epoch_50.pkl
+    size_bytes: 139692958
+    mtime_observed: "2025-07-18T21:18:39+08:00"
+    candidate_role: alternate_cognition_encoder
+    confidence: low
+    evidence: historical_directory_name_only
+    author_confirmation_required: true
+
+  - id: efusion_no_sample_eeg_epoch50
+    relative_to: CID_DATA_ROOT
+    path: ckpt/lora/without_eeg_text/efusionNG_epoch_50.pt
+    size_bytes: 142696496
+    mtime_observed: "2025-07-16T03:42:14+08:00"
+    candidate_role: static_lora_or_no_guidance
+    confidence: low
+    evidence: historical_directory_and_filename_only
+    author_confirmation_required: true
+
+historical_behavior:
+  cog_lora_unet_timestep: 50
+  static_lora_candidate_unet_timestep: 999
+  no_guidance_unet_timestep: 999
+  scheduler_steps: 1
+  scheduler_step_uses_scheduler_timestep: true
+  model_device_literals_present: true
+  inference_default_device: cuda:3
+  image_embedding_pairing: recursive_lexicographic_order
+  metric_pairing: lexicographic_filename_order
+  dependency_lock_present: false
+
+reproduction_gate:
+  formal_experiments_allowed: false
+  requirements:
+    - author_confirm_checkpoint_to_condition_mapping
+    - recover_or_reconstruct_legacy_dependency_versions
+    - freeze_sample_id_mapping
+    - reproduce_fixed_smoke_samples_on_gpu
+    - compare_full_test_metrics_with_historical_baseline
+
+notes:
+  - This manifest records observed candidates; it does not certify paper provenance.
+  - Preserve historical behavior during Phase A, including suspected bugs.
+  - Store checkpoint hashes in a run manifest after staging the selected files.
